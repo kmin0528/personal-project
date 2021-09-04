@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>방방곡곡</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/color.css" />
+<header style="font-family: twayair;">
+    <a href="login_complete.html"><h1 style= "font-size: 30px;">영화 정보공유 커뮤니티</h1></a></br></br>
+</header>
+</head>
+<body style="margin-left:300px;">
+    
+    
+<div>
+        <tr>
+            <td><b style= "font-size:15px">작성자 : </b><b id="userName" style="font-size:15px"></b></td> 
+        </tr>
+    </br>
+        <tr>
+            <label name="myform" id="myform">
+                <fieldset>
+                    <div>
+                        <input type="radio" name="rating" value="5" id="rate1" required value = "1"><label for="rate1">⭐</label>
+                        <input type="radio" name="rating" value="4" id="rate2" required value = "2"><label for="rate2">⭐</label>
+                        <input type="radio" name="rating" value="3" id="rate3" required value = "3"><label for="rate3">⭐</label>
+                        <input type="radio" name="rating" value="2" id="rate4" required value = "4"><label for="rate4">⭐</label>
+                        <input type="radio" name="rating" value="1" id="rate5" required value = "5"><label for="rate5">⭐</label>
+                        <b>: 별점 </b>
+                    </div>    
+                </fieldset>
+            </label>
+        </tr>
+    </br>
+        <tr>
+            <td><input type="text" id="movie" name="movie" placeholder="영화 제목"></td>
+        </tr>
+    </br>
+        <tr>
+            <td><input type="text" id="title" name="title" placeholder="제목"></td>
+        </tr>
+    </br>
+        <tr>
+            <td><textarea rows="15" cols="100" type="text" id="contents" name="contents" placeholder="내용을 입력하세요."></textarea>
+              </tr>
+              <br/>
+            </br>
+        <div style="width:723px; text-align: right;">
+            <!-- <div style="width:100%; text-align: right;"> -->
+                 <button onclick="window.history.back()">취소</button>
+                 <button onclick="save()">수정</button>
+         </div>
+</div>
+</div> 
+    </body>
+<script>
+  helloUser()
+    function helloUser(){
+        let user = document.querySelector('#userName');
+        let span = document.createElement("span");
+        var usr = JSON.parse(sessionStorage.getItem('__login__'));
+        console.log(usr.pw, usr.id);
+
+        user.appendChild(span);
+        span.innerText = usr.id;      
+    }
+
+    var rate = localStorage.getItem("rate");
+    if (rate) {
+     let radioByValue = document.querySelector("input[value='" + rate + "']");
+     radioByValue.checked = true
+    }
+    var inputrate = [...document.getElementsByName("rating")];
+
+    inputrate.forEach(el => {
+    el.addEventListener("change", function() {
+         JSON.stringify(localStorage.setItem("rate", this.value));
+        });
+    });
+
+ //   function readImage(input) {
+ //       var img= document.getElementById("input_image").src;
+  //      document.getElementById("demo").innerHTML = img;
+
+ //   if(input.files && input.files[0]) {
+   //     const reader = new FileReader()
+  //      reader.onload = e => {
+  //          const previewImage = document.getElementById("prev_img")
+    //        previewImage.src = e.target.result
+  //      }
+   //     reader.readAsDataURL(input.files[0])
+
+   // }
+//}
+   // const inputImage = document.getElementById("input_image")
+  //  inputImage.addEventListener("change", e => {
+  //  readImage(e.target)
+// })
+    getContents();
+    function getContents() {
+    var contents = JSON.parse(localStorage.getItem("contents"+getParameterByName('area')));
+    if (!contents) {
+      contents = [];
+    }
+    var content = contents  [getParameterByName('no')-1];
+    document.getElementById('title').value = content.title;
+    document.getElementById('movie').value = content.movie;
+    // document.getElementById('srcimg').value = content.srcimg ? content.srcimg  : '';
+    // document.getElementById('writer').value = content.writer;
+    document.getElementById('contents').value = content.contents;
+  }
+
+  function getParameterByName(name) { 
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]"); 
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search); 
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " ")); }
+    function goList(){
+        location.href='list.html?area=' + getParameterByName('area');
+        }
+
+    function save() {
+      if (!confirm('수정하시겠습니까?')) {
+        return;
+      }
+        var nolist = JSON.parse(localStorage.getItem("contents" + getParameterByName("area")));
+        var area = getParameterByName('area');
+        var content = nolist[getParameterByName("no") - 1];
+        var no = content.no;
+        
+        var contents = JSON.parse(localStorage.getItem("contents"+area));
+      if (!contents) {
+          contents = [];
+        }
+   //   var srcimg = document.getElementById('srcimg').value;
+      var title = document.getElementById('title').value;
+      // var writer = document.getElementById('writer').value;
+      var movie = document.getElementById('movie').value;
+      var content = document.getElementById('contents').value;  
+      contents[getParameterByName('no')-1]={no:no
+      //  , srcimg:srcimg
+        , area:area
+        , title:title
+        // , writer:writer
+        , contents:content
+        , movie:movie
+        , write_date:new Date()};
+      localStorage.setItem("contents"+area, JSON.stringify(contents));
+  
+      alert('수정되었습니다.');
+      goList();
+    }
+  </script>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>영화 정보 공유 커뮤니티</title>
+<link rel="stylesheet" type="text/css" href="css/index.css" />
+<link rel="stylesheet" type="text/css" href="css/color.css" />
+<header style="font-family: twayair;">
+    <a href="login_complete.html"><h1 style= "font-size: 30px;">영화 정보 공유 커뮤니티</h1></a>
+</header>
+</head>
+<body style="margin-left:300px;">
+       <div style="width:723px; text-align: right;">
+        <label for="area" style ="font-size: 31px;">장르 선택</label>
+        <select name="area" id="area">
+            <option value="1"; >SF</option>
+            <option value="2";>추리</option>
+            <option value="3";>멜로</option>
+            <option value="4";>액션</option>
+            <option value="5";>호러</option>
+        </select></br>
+    <div style= "width: 210px;">    
+       <tr>
+            <td><b style= "font-size:15px">작성자 : </b><b id="userName" style="font-size:18px; margin-right:55px"></b></td> 
+        </tr>
+    </br>  
+    <tr>
+        <label name="myform" id="myform">
+            <fieldset style="margin-right: 13px;">
+                <div>
+                    <input type="radio" name="rating" value="5" id="rate1" required value = "1"><label for="rate1">⭐</label>
+                    <input type="radio" name="rating" value="4" id="rate2" required value = "2"><label for="rate2">⭐</label>
+                    <input type="radio" name="rating" value="3" id="rate3" required value = "3"><label for="rate3">⭐</label>
+                    <input type="radio" name="rating" value="2" id="rate4" required value = "4"><label for="rate4">⭐</label>
+                    <input type="radio" name="rating" value="1" id="rate5" required value = "5"><label for="rate5">⭐</label>
+                    <b style="font-size: 15px;">: 별점</b>
+                </div>    
+            </fieldset>
+        </label>
+    </tr>
+        <tr>
+            <td><input type="text" id="movie" name="movie" placeholder="영화 제목" style="margin-right: 45px;"></td>
+        </tr>
+    </br>
+        <tr>
+            <td><input type="text" id="title" name="title" placeholder="제목" style="margin-right: 45px;"></td>
+        </tr>
+    </div>
+    </br>
+        <tr>
+            <td><textarea rows="15" cols="100" type="text" id="contents" name="contents" placeholder="내용을 입력하세요."></textarea>
+            </td>
+        </tr>
+        <br/>
+        <div style="width: 165px;">
+        </div>
+            <p id="demo"></p>
+            <div style="width:723px; text-align: right;">
+        <button onclick="window.history.back()">취소</button>
+        <button onclick="save()">작성</button>
+    </div>
+    </body>
+<script>
+    helloUser()
+    function helloUser(){
+        let user = document.querySelector('#userName');
+        let span = document.createElement("span");
+        var usr = JSON.parse(sessionStorage.getItem('__login__'));
+        console.log(usr.pw, usr.id);
+
+        user.appendChild(span);
+        span.innerText = usr.id;      
+    }
+    ///localstorage에 rate값 등록///
+    var rate = localStorage.getItem("rate");
+    if (rate) {
+     let radioByValue = document.querySelector("input[value='" + rate + "']");
+     radioByValue.checked = true
+    }
+    var inputrate = [...document.getElementsByName("rating")];
+
+    inputrate.forEach(el => {
+    el.addEventListener("change", function() {
+         JSON.stringify(localStorage.setItem("rate", this.value));
+        });
+    });
+    function test() {
+        var obj_length = document.getElementsByName("rating").length;
+  
+        for (var i=0; i<obj_length; i++) {
+            if (document.getElementsByName("rating")[i].checked == true) {
+                alert(document.getElementsByName("rating")[i].value);
+            }
+        }
+    }
+     function save() {
+      if (!confirm('저장하시겠습니까?')) {
+        return;
+      }
+      var area = document.getElementById("area").value;
+
+      var contents = JSON.parse(localStorage.getItem("contents"+area));
+      if (!contents) {
+          contents = [];
+        }
+      var movie = document.getElementById('movie').value;  
+      var title = document.getElementById('title').value;
+      var writer = JSON.parse(sessionStorage.getItem('__login__'));
+      var content = document.getElementById('contents').value;
+
+      contents.push({no:contents.length+1
+        , area:area
+        , movie:movie
+        , title:title
+        , writer:writer
+        , contents:content
+        , write_date:new Date()});
+        
+      localStorage.setItem("contents"+area, JSON.stringify(contents)); 
+      alert('저장되었습니다.');
+      location.href = 'list.html?area='+area;
+    }
+  </script>
+</html>

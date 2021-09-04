@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>영화 정보공유 커뮤니티</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/color.css" />
+    <header style="font-family:twayair;">
+      <h1 style="text-align: center;margin-top: 30px;"><a href="login_complete.html">영화 정보공유 커뮤니티</a></h1>
+    </header>
+  </head>
+  <body style="font-family: SBAggroB;">
+    <div style="text-align: center;"></br>
+        <p>[오늘의 추천 영화]</p> 
+    </div>
+    <div class="slideshow-container" style= "margin-top: 50px;">
+      <!-- Full-width images with number and caption text -->
+      <div class="mySlides fade">
+        <div class="numbertext">1 / 5</div>
+        <img src="images/sf.jpg" style="width:100%"></br>
+        <div class="text">SF영화</div>
+      </div>
+
+      <div class="mySlides fade">
+        <div class="numbertext">2 / 5</div>
+        <img src="images/멜로.jpg" style="width:100%">
+        <div class="text">멜로 영화</div>
+      </div>
+
+      <div class="mySlides fade">
+        <div class="numbertext">3 / 5</div>
+        <img src="images/sf1.jpg" style="width:100%">
+        <div class="text">액션 영화</div>
+      </div>
+
+      <div class="mySlides fade">
+        <div class="numbertext">4 / 5</div>
+        <img src="images/추리1.jpg" style="width:100%">
+        <div class="text">추리 영화</div>
+      </div>
+
+       <div class="mySlides fade">
+        <div class="numbertext">5 / 5</div>
+        <img src="images/공포.jpg" style="width:100%"></br>
+        <div class="text">호러 영화</div>
+      </div>
+
+      <!-- Next and previous buttons -->
+      <a class="prev" onclick="moveSlides(-1)">&#10094;</a>
+      <a class="next" onclick="moveSlides(1)">&#10095;</a>
+    </div>
+    <br/>
+
+    <!-- The dots/circles -->
+    <div style="text-align:center">
+      <span class="dot" onclick="currentSlide(0)"></span>
+      <span class="dot" onclick="currentSlide(1)"></span>
+      <span class="dot" onclick="currentSlide(2)"></span>
+      <span class="dot" onclick="currentSlide(3)"></span>
+      <span class="dot" onclick="currentSlide(4)"></span>
+     
+    </div>
+  </body>
+  <script src="js/today.js"></script>
+</html>

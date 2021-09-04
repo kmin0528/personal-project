@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<title>자유게시판 글작성</title>
+<link rel="stylesheet" type="text/css" href="css/index.css" />
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<link rel="stylesheet" type="text/css" href="css/color.css" />
+<header style="font-family:twayair;">
+  <h1 style="width: 500px;margin: 0 auto; font-size: 35px;"><a href="login_complete.html">영화 정보공유 커뮤니티</a></h1></br>
+</header>
+<body>
+<div style="margin-left: 500px;">
+  <table>
+    <tr>
+      <th>영화 제목 :</th>
+      <td><p id="movie"></p></td>
+    </tr>
+    <tr>
+      <label name="myform" id="myform">
+        <fieldset>
+            <div onclick="return(false);">  <!--게시판 글 보기 페이지 이기 때문에 별점 수정 불가-->
+                <input type="radio" name="rating" value="5" id="rate1" required value = "1"><label for="rate1">⭐</label>
+                <input type="radio" name="rating" value="4" id="rate2" required value = "2"><label for="rate2">⭐</label>
+                <input type="radio" name="rating" value="3" id="rate3" required value = "3"><label for="rate3">⭐</label>
+                <input type="radio" name="rating" value="2" id="rate4" required value = "4"><label for="rate4">⭐</label>
+                <input type="radio" name="rating" value="1" id="rate5" required value = "5"><label for="rate5">⭐</label>
+                <b>: 별점</b>
+            </div>    
+        </fieldset>
+    </label>
+    </tr>
+    <tr>
+      <th>제목 :</th>
+      <td><p id="title"></p></td>
+    </tr>
+    <tr>
+      <th>작성자 :</th>
+      <td><p id="userName"></p></td>
+    </tr>
+    <tr>
+      <th >작성일 :</th>
+      <td><p id="write_date"></p></td>
+    </tr>
+    <tr>
+      <th>내용 :</th>
+      <td>
+    <pre id=contents></pre>
+    </td>   
+  </tr>
+
+
+</table>
+</div>
+
+<div style="width: 500px; margin: 0 auto; padding-top:20px">
+  <input button type="button" value='목록' onClick="goList()">
+  <div style='width:80px;float: right;'>
+    <button onclick="removeContent()">삭제</button>
+  </div>
+  <div style='width:50px;float: right;'>
+    <button onclick="modify()">수정</button>
+  </div>
+</div>
+ 
+</body>
+
+ 
+
+<script>
+  helloUser();
+    
+    function helloUser(){
+        let user = document.querySelector('#userName');
+        let span = document.createElement("span");
+        var usr = JSON.parse(sessionStorage.getItem('__login__'));
+        console.log(usr.pw, usr.id);
+
+        user.appendChild(span);
+        span.innerText = usr.id;      
+    }
+    var rate = localStorage.getItem("rate");
+    if (rate) {
+     let radioByValue = document.querySelector("input[value='" + rate + "']");
+     radioByValue.checked = true
+    }
+    var inputrate = [...document.getElementsByName("rating")];
+
+    inputrate.forEach(el => {
+    el.addEventListener("change", function() {
+         JSON.stringify(localStorage.setItem("rate", this.value));
+        });
+    });
+
+  function goList(){
+    location.href='list.html?area=' + getParameterByName('area');
+  }
+  
+  getContents();
+  function getContents() {
+  var contents = JSON.parse(
+    localStorage.getItem("contents" + getParameterByName("area"))
+  );
+  console.log("contents: ", contents);
+  if (!contents) {
+    contents = [];
+  }
+  var content = contents[getParameterByName("no") - 1];
+  console.log("content: ", content);
+  console.log("content: ", content.movie);
+  console.log("content: ", content.title);
+  console.log("content: ", content.writer);
+
+  const title = document.getElementById("title");
+  title.innerText = content.title;
+  // document.getElementById("writer").innerText = content.writer;
+  document.getElementById("movie").innerText = content.movie;
+  document.getElementById("contents").innerText = content.contents;
+  var write_date = content.write_date;
+  var date = write_date.substr(0, 10);
+  document.getElementById("write_date").innerText = date;
+  document.getElementById("viewimg").src=content.srcimg;
+  }
+  function modify() {
+      if (confirm('수정하시겠습니까?')) {
+      location.href = 'modify.html?area=' + getParameterByName('area') + '&no='+getParameterByName('no');
+    } else{
+      return;
+    }
+  }
+  function removeContent() {
+    if (!confirm('삭제하시겠습니까?')){
+
+      return;
+    }
+    var contents = JSON.parse(localStorage.getItem("contents"+getParameterByName('area')));
+    contents.splice(getParameterByName('no')-1,1);
+    localStorage.setItem("contents"+getParameterByName('area') , JSON.stringify(contents));
+    location.href = 'list.html';
+  }
+  function getParameterByName(name) { 
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]"); 
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search); 
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " ")); }
+</script>
+</html>

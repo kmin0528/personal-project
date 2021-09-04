@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="css/dropdown.css">
+    <link rel="stylesheet" href="css/color.css">
+<title>Page Title</title>
+<header style="font-family:twayair;">
+  <h1 style=" padding-top: 50px; margin-left: 500px;"><a href="login_complete.html">영화 정보공유 커뮤니티</a></h1>
+</header>
+</head>
+<body style="font-family: SBAggroB;">
+<div style="text-align: right;">
+  <table>
+    <tr>
+      <div style="margin-left:40px;"><b id="userName"></b>님 환영합니다.
+        <input button type="button" value='로그아웃' onClick="location.href='main.html'">
+        </div>
+    </tr>
+  </table>  
+</div>
+<div style="padding-top: 30px"class="menu-box">
+    <ul class="menu">
+      <li><a href="today.html">오늘의 영화</a> </li>
+      <li><a href="#;">장르별 영화</a> 
+           <ul class="sub">
+             <li><a href="list.html?area=1">SF</a></li>
+             <li><a href="list.html?area=2">추리</a></li>
+             <li><a href="list.html?area=3">멜로</a></li>
+             <li><a href="list.html?area=4">액션</a></li>
+             <li><a href="list.html?area=5">호러</a></li>
+            </ul>
+      </li>
+      <li><a href="top10.html">Top 10 영화</a></li>
+     <li><a href="question.html">문의하기</a> 
+      </li>
+    </ul>
+   </div>
+</body>
+<script>
+  helloUser();
+    
+
+    function helloUser(){
+        let user = document.querySelector('#userName');
+        let span = document.createElement("span");
+        var usr = JSON.parse(sessionStorage.getItem('__login__'));
+        console.log(usr.pw, usr.id);
+
+        user.appendChild(span);
+        span.innerText = usr.id;      
+    } 
+</script>
+</html>
